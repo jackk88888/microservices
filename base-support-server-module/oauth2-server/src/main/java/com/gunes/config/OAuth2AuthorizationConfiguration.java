@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -33,19 +32,12 @@ public class OAuth2AuthorizationConfiguration extends AuthorizationServerConfigu
     @Autowired
     private AuthClientDetailsService authClientDetailsService;
 
+    @Autowired
+    private PasswordEncoder encoder;
 
     @Autowired
     private JedisConnectionFactory jedisConnectionFactory;
 
-    @Override
-    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.withClientDetails(authClientDetailsService);
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Bean
     public TokenStore redisTokenStore() {
@@ -53,10 +45,14 @@ public class OAuth2AuthorizationConfiguration extends AuthorizationServerConfigu
     }
 
     @Override
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        clients.withClientDetails(authClientDetailsService);
+    }
+
+    @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
                 .tokenStore(redisTokenStore())
-                .prefix("/api")
                 .authenticationManager(authenticationManager)
                 .userDetailsService(domainUserDetailsService);
     }
@@ -66,7 +62,7 @@ public class OAuth2AuthorizationConfiguration extends AuthorizationServerConfigu
         oauthServer
                 .tokenKeyAccess("permitAll()")
                 .checkTokenAccess("isAuthenticated()")
-                .passwordEncoder(passwordEncoder())
+                .passwordEncoder(encoder)
                 .allowFormAuthenticationForClients();
     }
 

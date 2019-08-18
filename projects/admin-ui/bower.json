@@ -30,7 +30,6 @@
     "angular-skycons": "~2.0.0",
     "angular-smart-table": "~1.4.9",
     "angular-touch": "1.5.8",
-    "angular-cache-buster": "*",
     "angular-translate": "~2.5.2",
     "angular-translate-loader-static-files": "~2.5.2",
     "angular-translate-storage-cookie": "~2.5.2",

@@ -11,7 +11,6 @@ angular.module('app', [
     'ngTouch',
     'ngStorage',
     'ui.router',
-    'ngCacheBuster',
     'ui.bootstrap',
     'ui.utils',
     'ui.load',

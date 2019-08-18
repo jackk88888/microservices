@@ -10,6 +10,8 @@ import java.util.*;
 @RedisHash("authclientdetails")
 public class AuthClientDetails implements ClientDetails {
 
+    private static final long serialVersionUID = 1L;
+
     @Id
     private String id;
 
