@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: hystrix-dashboard-server
+  cloud:
+    config:
+      uri: http://localhost:7000
+      fail-fast: true
+      password: Kurbis3874569
+      username: user
+      label: hystrix-dashboard-server

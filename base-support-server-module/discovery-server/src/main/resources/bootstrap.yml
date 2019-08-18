@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: discovery-server
+  cloud:
+    config:
+      uri: http://localhost:7000
+      fail-fast: true
+      password: Kurbis3874569
+      username: user
+      label: discovery-server
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    registerWithEureka: false
+    fetchRegistry: false

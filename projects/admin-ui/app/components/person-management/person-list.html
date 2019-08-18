@@ -1,0 +1,89 @@
+<div class="bg-light lter b-b wrapper-md">
+    <div class="row">
+        <div class="col-md-8">
+            <h1 class="m-n font-thin h3">Kişi Yönetimi</h1>
+        </div>
+        <div class="col-md-4">
+            <button class="pull-right btn btn-primary btn-addon"
+                    ui-sref="app.person-create">
+                <i class="fa fa-plus"></i>Oluştur
+            </button>
+        </div>
+    </div>
+</div>
+<div class="wrapper-md">
+    <div class="panel panel-default">
+        <div class="panel-heading">Filtre</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-1 control-label">
+                    Durum
+                </label>
+                <div class="col-sm-2">
+                    <select class="form-control" ng-model="filter.status">
+                        <option value="">Please Select</option>
+                        <option value="ACTIVE">Active</option>
+                        <option value="PASSIVE">Passive</option>
+                        <option value="DELETE">Delete</option>
+                    </select>
+                </div>
+            </div>
+            <button class="pull-right btn btn-success btn-md m-l" ng-click="filter()">
+                Filtrele
+            </button>
+            <button class="pull-right btn btn-primary btn-md"  ng-click="clearFilter()">
+                Temizle
+            </button>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Kişi Listesi</div>
+        <table st-table="personList" st-pipe="personCallServer"
+               class="table table-striped">
+            <thead>
+            <tr>
+                <th st-sort="id">ID</th>
+                <th st-sort="status">Durum</th>
+                <th st-sort="name">Ad</th>
+                <th st-sort="surname">Soyad</th>
+                <th st-sort="createDate">Oluşturma Tarihi</th>
+                <th st-sort="createDate">Güncellenme Tarihi</th>
+                <th>Aksiyon</th>
+            </tr>
+            </thead>
+            <tbody ng-hide="isLoading">
+            <tr ng-repeat="row in personList">
+                <td>{{row.id}}</td>
+                <td>{{row.status}}</td>
+                <td>{{row.name}}</td>
+                <td>{{row.surname}}</td>
+                <td>{{row.createdAt | date:'medium'}}</td>
+                <td>{{row.updatedAt | date:'medium'}}</td>
+                <td>
+                    <button type="button" ng-click="edit(row)"
+                            class="btn btn-xs btn-primary">
+                        <i class="fa fa-edit"></i>Güncelle
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+            <tbody ng-show="isLoading">
+            <tr>
+                <td colspan="7" class="text-center"><i
+                    class="fa fa-spin fa-refresh"></i>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="7" class="text-center">
+                    <div st-pagination="" st-items-by-page="itemsByPage"
+                         st-displayed-pages="5" class="no-margin">
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

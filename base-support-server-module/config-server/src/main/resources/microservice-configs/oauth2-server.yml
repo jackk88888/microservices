@@ -1,0 +1,8 @@
+server:
+  context-path: /oauth2-server
+  port: 7300
+
+redis:
+  host: localhost
+  port: 6379
+  pass: Kurbis3874569

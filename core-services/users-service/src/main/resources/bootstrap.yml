@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: users-service
+  cloud:
+    config:
+      uri: http://localhost:7000
+      fail-fast: true
+      password: as3874569
+      username: user
+      label: users-service

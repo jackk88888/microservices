@@ -1,0 +1,22 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="app.settings.asideFolded = false;app.settings.asideDock = false;">
+    <!-- main -->
+    <div class="col">
+        <!-- main header -->
+        <div class="bg-light lter b-b wrapper-md">
+            <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                    <h1 class="m-n font-thin h3 text-black">Dashboard</h1>
+                    <small class="text-muted">Welcome to admin application</small>
+                </div>
+            </div>
+        </div>
+        <!-- / main header -->
+    </div>
+    <!-- / main -->
+    <!-- right col -->
+    <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
+        <div data-ng-include=" 'app/shared/aside-right/aside-right.html' ">
+        </div>
+    </div>
+    <!-- / right col -->
+</div>

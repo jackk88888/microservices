@@ -1,0 +1,27 @@
+logging:
+  level:
+    org.springframework.security: TRACE
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+server:
+  port: 5100
+  servlet:
+    context-path: /locales-service
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+ribbon:
+  ReadTimeout: 20000
+  ConnectTimeout: 20000
+security:
+  oauth2:
+    resource:
+      user-info-uri: http://localhost:5000/uaa/users/current

@@ -1,0 +1,135 @@
+<div class="bg-light lter b-b wrapper-md">
+    <div class="row">
+        <div class="col-md-8">
+            <h1 class="m-n font-thin h3">Kişi Yönetimi</h1>
+        </div>
+        <div class="col-md-4">
+            <button class="pull-right btn btn-default btn-addon btn-lg" ui-sref="app.persons">
+                <i class="icon-action-undo"></i>İptal
+            </button>
+        </div>
+    </div>
+</div>
+<div class="wrapper-md">
+    <div>
+        <div class="col-sm-8">
+            <form name="form" class="form-horizontal form-validation" ng-submit="save();">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>Kişi Detayı</strong>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group" ng-if="formEdit">
+                            <label class="col-sm-2 control-label">Durum
+                                <small
+                                        class="text-danger">*
+                                </small>
+                            </label>
+                            <div class="col-sm-10">
+                                <select class="form-control" ng-model="person.status" required>
+                                    <option value="">Please Select</option>
+                                    <option value="ACTIVE">Active</option>
+                                    <option value="PASSIVE">Passive</option>
+                                    <option value="DELETE">Delete</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div ng-if="formEdit" class="line line-dashed b-b line-lg pull-in"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Ad
+                                <small
+                                        class="text-danger">*
+                                </small>
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" placeholder="Ad "
+                                       ng-model="person.name" required>
+                            </div>
+                        </div>
+                        <div class="line line-dashed b-b line-lg pull-in"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Soyad
+                                <small
+                                        class="text-danger">*
+                                </small>
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" placeholder="Soyad "
+                                       ng-model="person.surname" required>
+                            </div>
+                        </div>
+                        <div class="line line-dashed b-b line-lg pull-in"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Kullanıcı Adı
+                                <small
+                                        class="text-danger">*
+                                </small>
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control"
+                                       ng-model-options='{ debounce: 500 }'
+                                       ng-change='isAvaliableUserName()' placeholder="Kullanıcı Adı"
+                                       ng-model="person.user.username" required>
+                            </div>
+                        </div>
+                        <div class="line line-dashed b-b line-lg pull-in" ng-if="!formEdit"></div>
+                        <div class="form-group" ng-if="!formEdit">
+                            <label class="col-sm-2 control-label">Şifre
+                                <small
+                                        class="text-danger">*
+                                </small>
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" placeholder="Şifre"
+                                       ng-model="person.user.password" required>
+                            </div>
+                        </div>
+                        <div class="line line-dashed b-b line-lg pull-in" ng-if="!formEdit"></div>
+                        <div class="form-group" ng-if="!formEdit">
+                            <label class="col-sm-2 control-label">Şifre Tekrar
+                                <small
+                                        class="text-danger">*
+                                </small>
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" name="confirmPassword"
+                                       placeholder="Şifre Tekrar" ng-model="confirmPassword" required
+                                       ui-validate=" '$value==person.user.password' "
+                                       ui-validate-watch=" 'person.user.password' ">
+                                <span ng-if='form.confirmPassword.$error.validator && confirmPassword.length > 0'
+                                      class="text-danger">Şifre aynı değil!</span></div>
+                        </div>
+                        <div class="line line-dashed b-b line-lg pull-in"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">Yetki
+                                <small
+                                        class="text-danger">*
+                                </small>
+                            </label>
+                            <div class="col-sm-10">
+                                <ui-select multiple ng-model="$parent.selectedPermissions" theme="bootstrap"
+                                           sortable="true" close-on-select="true" required>
+                                    <ui-select-match placeholder="Lütfen Yetki Seçiniz...">{{$item.name}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                            repeat="permission in permissionList | propsFilter: {name: $select.search}">
+                                        <div ng-bind-html="permission.name | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="panel-footer text-right bg-light lter">
+                        <button type="button" class="btn btn-danger text-left w-xs m-r-lg"
+                                ng-if="formEdit" ng-click="delete();">Sil
+                        </button>
+                        <button type="submit" class="btn btn-success w-xs"
+                                ng-disabled="form.$invalid">Kaydet
+                        </button>
+                    </footer>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,3 @@
+server:
+  context-path: /users-service
+  port: 8000
