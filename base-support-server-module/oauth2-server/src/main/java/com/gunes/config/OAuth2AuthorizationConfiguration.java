@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -22,8 +23,11 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
 @EnableAuthorizationServer
 public class OAuth2AuthorizationConfiguration extends AuthorizationServerConfigurerAdapter {
 
+
+    private static final String PERMIT_ALL = "permitAll()";
+    private static final String IS_AUTHENTICATED = "isAuthenticated()";
+
     @Autowired
-    @Qualifier("authenticationManagerBean")
     private AuthenticationManager authenticationManager;
 
     @Autowired
@@ -31,9 +35,6 @@ public class OAuth2AuthorizationConfiguration extends AuthorizationServerConfigu
 
     @Autowired
     private AuthClientDetailsService authClientDetailsService;
-
-    @Autowired
-    private PasswordEncoder encoder;
 
     @Autowired
     private JedisConnectionFactory jedisConnectionFactory;
@@ -44,26 +45,30 @@ public class OAuth2AuthorizationConfiguration extends AuthorizationServerConfigu
         return new RedisTokenStore(jedisConnectionFactory);
     }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.withClientDetails(authClientDetailsService);
     }
 
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    public void configure(final AuthorizationServerSecurityConfigurer oauthServer) {
+        oauthServer.tokenKeyAccess(PERMIT_ALL)
+                .checkTokenAccess(IS_AUTHENTICATED)
+                .passwordEncoder(passwordEncoder())
+                .allowFormAuthenticationForClients();
+    }
+
+    @Override
+    public void configure(final AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints
                 .tokenStore(redisTokenStore())
                 .authenticationManager(authenticationManager)
                 .userDetailsService(domainUserDetailsService);
-    }
-
-    @Override
-    public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-        oauthServer
-                .tokenKeyAccess("permitAll()")
-                .checkTokenAccess("isAuthenticated()")
-                .passwordEncoder(encoder)
-                .allowFormAuthenticationForClients();
     }
 
 }
